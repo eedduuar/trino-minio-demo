@@ -1,6 +1,9 @@
 # Onion lab: take home test
 
 ## Components
+Basic trino and minio installation. The idea is to use minio as a storage layer and trino as db engine.
+There a basic pandas code to create the parquet file with the desired format and then query using SQL.
+Based on :  https://github.com/njanakiev/trino-minio-docker
 
 ### TrinoDB: https://trino.io/docs/current/overview.html 
 
@@ -10,63 +13,29 @@
 
 ===============
 
-### Ingestion Code
-
-###$ install and run the app 
-```
-poetry install
-poetry shell
-python3 src/main.py
-```
-
-
-## Setup
-
-Based on :  https://github.com/njanakiev/trino-minio-docker
-
-### prerequisites
+## prerequisites
 ```
 brew install s3cmd
 brew install openjdk@11
 curl -sSL https://install.python-poetry.org | python3 -
 ```
 
-### docker-composer
+
+
+## Setup
+
 ```
-docker-compose up -d 
+make compose
+make minio
+make trino
 ```
 
-### minio
+## install and run the app 
 ```
-s3cmd --config minio.s3cfg --configure
-s3cmd --config minio.s3cfg mb s3://satellite
-s3cmd --config minio.s3cfg put data/starlink.parquet s3://satellite
-s3cmd --config minio.s3cfg la
+poetry install
+poetry shell
+python3 src/main.py
 ```
-
-### trino
-```
-# get trino
-wget https://repo1.maven.org/maven2/io/trino/trino-cli/403/trino-cli-403-executable.jar   -O trino
-chmod +x trino
-
-./trino --execute "
-CREATE SCHEMA IF NOT EXISTS minio.satellite
-WITH (location = 's3a://satellite/');
-
-CREATE TABLE IF NOT EXISTS minio.satellite.starlink (
-  creation_date TIMESTAMP,
-  object_id  VARCHAR,
-  longitude  BIGINT,
-  latitude DOUBLE
-)
-WITH (
-  external_location = 's3a://satellite/starlink',
-  format = 'PARQUET'
-);
-"
-```
-
 
 ## Queries
 ### PART 3: get latest position for a given satellite and hour

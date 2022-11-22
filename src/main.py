@@ -1,5 +1,6 @@
 import logging
 import json
+import subprocess
 import pandas as pd
 
 logging.basicConfig(format="%(asctime)s - %(message)s", level=logging.DEBUG)
@@ -24,13 +25,27 @@ def main():
             "spaceTrack.OBJECT_ID": "object_id",
         }
     )
-    df['creation_date'] = pd.to_datetime(df['creation_date'])
-    df['longitude'] = pd.to_numeric(df['longitude'])
-    df['latitude'] = pd.to_numeric(df['latitude'])
-    df['object_id'] = df['object_id'].astype('str') 
+    df["creation_date"] = pd.to_datetime(df["creation_date"])
+    df["longitude"] = pd.to_numeric(df["longitude"])
+    df["latitude"] = pd.to_numeric(df["latitude"])
+    df["object_id"] = df["object_id"].astype("str")
     df = df.fillna(0)
-    df[['creation_date','object_id','longitude','latitude']].to_parquet(DEST_PATH, index=False)
-    df[['creation_date','object_id','longitude','latitude']].to_csv('/tmp/1.csv', index=False)
-
+    df[["creation_date", "object_id", "longitude", "latitude"]].to_parquet(
+        DEST_PATH, index=False
+    )
+    # replace subprecess by boto3
+    command = [
+        "s3cmd",
+        "--config",
+        "../minio.s3cfg",
+        "put",
+        f"{DEST_PATH}",
+        "s3://satellite/starlink/starlink.parquet",
+    ]
+    logging.debug(command)
+    try:
+        subprocess.run(command, capture_output=True)
+    except subprocess.CalledProcessError as e:
+        logging.error(e)
 
 main()
