@@ -2,7 +2,10 @@
 
 ## Components
 Basic trino and minio installation. The idea is to use minio as a storage layer and trino as db engine.
-There a basic pandas code to create the parquet file with the desired format and then query using SQL.
+
+ main.py will create the parquet file with the desired format.
+
+Then, to run the queries you should open the trino cli
 Based on :  https://github.com/njanakiev/trino-minio-docker
 
 ### TrinoDB: https://trino.io/docs/current/overview.html 
@@ -19,8 +22,6 @@ brew install s3cmd
 brew install openjdk@11
 curl -sSL https://install.python-poetry.org | python3 -
 ```
-
-
 
 ## Setup
 
