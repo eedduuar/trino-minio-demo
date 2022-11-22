@@ -3,10 +3,9 @@
 ## Components
 Basic trino and minio installation. The idea is to use minio as a storage layer and trino as db engine.
 
- main.py will create the parquet file with the desired format.
+`main.py` will create the parquet file with the expected format.
 
-Then, to run the queries you should open the trino cli
-Based on :  https://github.com/njanakiev/trino-minio-docker
+Then, to run the queries you should run `./trino`
 
 ### TrinoDB: https://trino.io/docs/current/overview.html 
 
@@ -76,3 +75,7 @@ Splits: 18 total, 18 done (100.00%)
 0.45 [3.14K rows, 50.1KB] [6.93K rows/s, 111KB/s]
 
 ```
+
+
+
+trino-minio template from :  https://github.com/njanakiev/trino-minio-docker
