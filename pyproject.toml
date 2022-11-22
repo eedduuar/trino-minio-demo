@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "satellite"
+version = "0.1.0"
+description = "Onion Labs take home test"
+authors = ["eduardo cusa <eduardo.cusa@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pandas = "^1.5.1"
+pyarrow = "^10.0.0"
+fastparquet = "^2022.11.0"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^22.10.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
